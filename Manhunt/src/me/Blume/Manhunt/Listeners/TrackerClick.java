@@ -15,11 +15,12 @@ public class TrackerClick implements Listener {
 	@EventHandler
 	public void trackerClick(PlayerInteractEvent event) {
 		if(plugin.getHunter().contains(event.getPlayer().getUniqueId())) {
-	
+
+			
 		}
-		
-		
+
+
 	}
-	
+
 
 }
