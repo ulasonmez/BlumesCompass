@@ -9,6 +9,7 @@ import me.Blume.Manhunt.Commands.AddHunters;
 import me.Blume.Manhunt.Commands.AddSpeedrunner;
 import me.Blume.Manhunt.Commands.RemoveHunters;
 import me.Blume.Manhunt.Commands.RemoveSpeedrunner;
+import me.Blume.Manhunt.Listeners.TrackerClick;
 import me.Blume.Manhunt.Listeners.TrackerDrop;
 
 public class Main extends JavaPlugin{
@@ -21,6 +22,7 @@ public class Main extends JavaPlugin{
 		getCommand("addspeedrunner").setExecutor(new AddSpeedrunner(this));
 		getCommand("removespeedrunner").setExecutor(new RemoveSpeedrunner(this));
 		getServer().getPluginManager().registerEvents(new TrackerDrop(this), this);
+		getServer().getPluginManager().registerEvents(new TrackerClick(this), this);
 	}
 	@Override
 	public void onDisable() {
