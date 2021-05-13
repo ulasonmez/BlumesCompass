@@ -1,0 +1,10 @@
+main: me.Blume.Manhunt.Main
+name: Manhunt
+author: Blume
+version: 1.0
+api-version: 1.16
+
+commands:
+  addhunter:
+  removehunter:
+  
