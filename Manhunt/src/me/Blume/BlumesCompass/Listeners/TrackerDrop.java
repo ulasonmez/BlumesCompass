@@ -1,4 +1,4 @@
-package me.Blume.Manhunt.Listeners;
+package me.Blume.BlumesCompass.Listeners;
 
 import java.util.ArrayList;
 import org.bukkit.enchantments.Enchantment;
@@ -8,8 +8,9 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-import me.Blume.Manhunt.Main;
-import me.Blume.Manhunt.Compass.CompassItem;
+
+import me.Blume.BlumesCompass.Main;
+import me.Blume.BlumesCompass.Compass.CompassItem;
 
 public class TrackerDrop implements Listener{
 	CompassItem items = new CompassItem();

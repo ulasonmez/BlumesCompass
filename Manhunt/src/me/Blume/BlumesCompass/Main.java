@@ -1,14 +1,14 @@
-package me.Blume.Manhunt;
+package me.Blume.BlumesCompass;
 
 import java.util.HashMap;
 import java.util.UUID;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.Blume.Manhunt.Commands.hunts;
-import me.Blume.Manhunt.Commands.removehunts;
-import me.Blume.Manhunt.Listeners.TrackerClick;
-import me.Blume.Manhunt.Listeners.TrackerDrop;
+import me.Blume.BlumesCompass.Commands.hunts;
+import me.Blume.BlumesCompass.Commands.removehunts;
+import me.Blume.BlumesCompass.Listeners.TrackerClick;
+import me.Blume.BlumesCompass.Listeners.TrackerDrop;
 
 public class Main extends JavaPlugin{
 	public HashMap<UUID,UUID> hunt = new HashMap<UUID,UUID>();

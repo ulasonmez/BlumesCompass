@@ -1,4 +1,4 @@
-package me.Blume.Manhunt.Commands;
+package me.Blume.BlumesCompass.Commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -6,8 +6,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import me.Blume.Manhunt.Main;
-import me.Blume.Manhunt.Compass.CompassItem;
+
+import me.Blume.BlumesCompass.Main;
+import me.Blume.BlumesCompass.Compass.CompassItem;
 public class hunts implements CommandExecutor{
 
 	@SuppressWarnings("unused")

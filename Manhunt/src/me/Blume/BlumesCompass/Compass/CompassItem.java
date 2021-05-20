@@ -1,4 +1,4 @@
-package me.Blume.Manhunt.Compass;
+package me.Blume.BlumesCompass.Compass;
 
 import java.util.UUID;
 import org.bukkit.Bukkit;

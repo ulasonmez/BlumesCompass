@@ -1,4 +1,4 @@
-package me.Blume.Manhunt.Listeners;
+package me.Blume.BlumesCompass.Listeners;
 
 
 import java.util.List;
@@ -13,8 +13,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
-import me.Blume.Manhunt.Main;
-import me.Blume.Manhunt.Compass.CompassItem;
+
+import me.Blume.BlumesCompass.Main;
+import me.Blume.BlumesCompass.Compass.CompassItem;
 
 public class TrackerClick implements Listener {
 	@SuppressWarnings("unused")
@@ -47,7 +48,7 @@ public class TrackerClick implements Listener {
 
 							hunter.sendMessage(ChatColor.AQUA + "Now tracking " + closestVictim.getName() + ".");
 						} else {
-							hunter.sendMessage(ChatColor.AQUA + "Tracking last location ");
+							hunter.sendMessage(ChatColor.AQUA + "Tracking last location");
 							CompassMeta meta1 = (CompassMeta) item.getItemMeta();
 							if (meta1 == null) {
 								meta1 = (CompassMeta) (items.Tracker().getItemMeta());

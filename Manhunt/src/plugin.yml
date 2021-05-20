@@ -1,4 +1,4 @@
-main: me.Blume.Manhunt.Main
+main: me.Blume.BlumesCompass.Main
 name: BlumesCompass
 author: Blume
 version: 1.0
