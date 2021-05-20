@@ -2,6 +2,8 @@ package me.Blume.BlumesCompass.Listeners;
 
 
 import java.util.List;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.enchantments.Enchantment;
@@ -24,7 +26,7 @@ public class TrackerClick implements Listener {
 		this.plugin=plugin;
 	}
 	CompassItem items = new CompassItem();
-	Location portalloc;
+	Location portalloc=null;
 	@EventHandler
 	public void trackerClick(PlayerInteractEvent event) {
 		if (plugin.gethunt().containsKey(event.getPlayer().getUniqueId())) {
@@ -48,7 +50,11 @@ public class TrackerClick implements Listener {
 
 							hunter.sendMessage(ChatColor.AQUA + "Now tracking " + closestVictim.getName() + ".");
 						} else {
-							hunter.sendMessage(ChatColor.AQUA + "Tracking last location");
+							if(portalloc==null) {
+								hunter.sendMessage(ChatColor.AQUA+"Could not find a player to track.");	
+								return;
+							}
+							hunter.sendMessage(ChatColor.AQUA + "Tracking the last location of "+Bukkit.getPlayer(plugin.hunt.get(hunter.getUniqueId())).getName());
 							CompassMeta meta1 = (CompassMeta) item.getItemMeta();
 							if (meta1 == null) {
 								meta1 = (CompassMeta) (items.Tracker().getItemMeta());
