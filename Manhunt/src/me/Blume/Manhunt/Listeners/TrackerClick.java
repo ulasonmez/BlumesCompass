@@ -1,71 +1,90 @@
 package me.Blume.Manhunt.Listeners;
 
 
-import java.util.HashSet;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
+import java.util.List;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
-
 import me.Blume.Manhunt.Main;
 import me.Blume.Manhunt.Compass.CompassItem;
+
 public class TrackerClick implements Listener {
 	@SuppressWarnings("unused")
 	private Main plugin;
 	public TrackerClick(Main plugin) {
 		this.plugin=plugin;
 	}
+	CompassItem items = new CompassItem();
+	Location portalloc;
 	@EventHandler
 	public void trackerClick(PlayerInteractEvent event) {
-		Player hunter = event.getPlayer();
-
-
-		if(plugin.getHunter().contains(hunter.getUniqueId())) {
+		if (plugin.gethunt().containsKey(event.getPlayer().getUniqueId())) {
+			Player hunter = event.getPlayer();
 			ItemStack item = event.getItem();
-			if(item.isSimilar(CompassItem.compass)) {
-				UUID SpeedrunnerID = getSpeedrunner();
-				Player Speedrunner = Bukkit.getPlayer(SpeedrunnerID);
+			Action action = event.getAction();
+			if(plugin.gethunt().containsKey(hunter.getUniqueId())) {
+				if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
+					if (item != null && item.getEnchantmentLevel(Enchantment.DURABILITY)==2001) {
+						Player closestVictim = getClosestVictim(hunter);
+						if (closestVictim != null) {    
+							CompassMeta meta = (CompassMeta) item.getItemMeta();
+							if (meta == null) {
+								meta = (CompassMeta) (items.Tracker().getItemMeta());
+							}
+							meta.setLodestoneTracked(false);
+							meta.setLodestone(closestVictim.getLocation());
+							item.setItemMeta(meta);
 
+							hunter.setCompassTarget(closestVictim.getLocation());
 
-				if(Speedrunner!=null) {
-					if(sameWorld(hunter)) {
-						hunter.setCompassTarget(Speedrunner.getLocation());
-						return;
+							hunter.sendMessage(ChatColor.AQUA + "Now tracking " + closestVictim.getName() + ".");
+						} else {
+							hunter.sendMessage(ChatColor.AQUA + "Tracking last location ");
+							CompassMeta meta1 = (CompassMeta) item.getItemMeta();
+							if (meta1 == null) {
+								meta1 = (CompassMeta) (items.Tracker().getItemMeta());
+							}
+							meta1.setLodestoneTracked(false);
+							meta1.setLodestone(portalloc);
+							item.setItemMeta(meta1);
+							hunter.setCompassTarget(portalloc);
+						}
 					}
-					else {
-						hunter.sendMessage("SpeedRunner is not in your world");
-						return;
-					}
-
-				}
-				else {
-					hunter.sendMessage("Could not find a player to track.");
-					return;
 				}
 			}
-
+		}
+	}
+	@EventHandler
+	public void notworld(PlayerTeleportEvent event) {
+		Player player = event.getPlayer();
+		if(plugin.gethunt().containsValue(player.getUniqueId())) {
+			portalloc = event.getFrom();
 		}
 	}
 
-	public UUID getSpeedrunner() {
-		HashSet<UUID> Speedrunners = plugin.getSpeedrunner();
-		for(UUID p : Speedrunners) {
-			return p;
-		}
-		return null;
-	}
-	public boolean sameWorld(Player hunter) {
-		HashSet<UUID> Speedrunners = plugin.getSpeedrunner();
-		for(UUID p : Speedrunners) {
-			if(hunter.getWorld().getEnvironment()==Bukkit.getPlayer(p).getWorld().getEnvironment()) {
-				return true;
+	private Player getClosestVictim(Player hunter) {
+		Location hunterLocation = hunter.getLocation();
+		Player closestPlayer = null;
+		double closestDistanceSquared = Double.MAX_VALUE;
+
+		List<Player> candidates = hunter.getWorld().getPlayers();
+		for (Player p : candidates) {
+			if (plugin.gethunt().containsValue(p.getUniqueId())) {
+				double distanceSquared = p.getLocation().distanceSquared(hunterLocation);
+				if (distanceSquared <= closestDistanceSquared) {
+					closestDistanceSquared = distanceSquared;
+					closestPlayer = p;
+				}
 			}
 		}
-		return false;
+		return closestPlayer;
 	}
 }

@@ -1,21 +1,32 @@
 package me.Blume.Manhunt.Compass;
 
+import java.util.UUID;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class CompassItem {
-	public static ItemStack compass = new ItemStack(Material.COMPASS);
-		public ItemStack giveCompass() {
-			ItemMeta meta = compass.getItemMeta();
-			meta.setDisplayName("Tracker");
-			compass.setItemMeta(meta);
-			return compass;
-		}
-		public void removeCompass(Player player) {
-			if(player.getInventory().contains(CompassItem.compass)) {
-				player.getInventory().remove(CompassItem.compass);
+	public ItemStack tracker;
+	public ItemStack Tracker() {
+		tracker = new ItemStack(Material.COMPASS);
+		ItemMeta meta = tracker.getItemMeta();
+		meta.setDisplayName("Tracker");
+		meta.addEnchant(Enchantment.DURABILITY, 2001, true);
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		tracker.setItemMeta(meta);
+		return tracker;
+	}
+	public void removeTracker(UUID hunter) {
+		ItemStack[] inv = Bukkit.getPlayer(hunter).getInventory().getContents();
+		for(ItemStack items : inv){
+			if(items!=null) {
+				if(items.getEnchantmentLevel(Enchantment.DURABILITY)==2001) {
+					Bukkit.getPlayer(hunter).getInventory().remove(items);;
+				}
 			}
 		}
+	}
 }

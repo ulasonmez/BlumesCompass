@@ -1,13 +1,13 @@
 package me.Blume.Manhunt.Listeners;
 
-import org.bukkit.entity.Player;
+import java.util.ArrayList;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-
 import me.Blume.Manhunt.Main;
 import me.Blume.Manhunt.Compass.CompassItem;
 
@@ -19,33 +19,32 @@ public class TrackerDrop implements Listener{
 	}
 	@EventHandler
 	public void trackerDrops(PlayerDropItemEvent event) {
-		if(plugin.getHunter().contains(event.getPlayer().getUniqueId())) {
-			if(event.getItemDrop().getItemStack().isSimilar(CompassItem.compass)) {
+		if(plugin.gethunt().containsKey(event.getPlayer().getUniqueId())) {
+			if(event.getItemDrop().getItemStack().isSimilar(items.tracker) || event.getItemDrop().getItemStack().getEnchantments().containsValue(2001)) {
 				event.setCancelled(true);
 				return;
 			}
 		}
-		else if(event.getItemDrop().getItemStack().isSimilar(CompassItem.compass)) {
-			event.getItemDrop().remove();
-			return;
-		}
 	}
 	@EventHandler
 	public void trackerDeath(PlayerDeathEvent event) {
-		if(plugin.getHunter().contains(event.getEntity().getUniqueId())) {
-			for(ItemStack drop : event.getDrops()) {
-				if(drop.equals(CompassItem.compass)) {
-					event.getDrops().remove(event.getDrops().indexOf(drop));
+		if(plugin.gethunt().containsKey(event.getEntity().getUniqueId())) {
+			ArrayList<ItemStack> drops = new ArrayList<ItemStack>(event.getDrops());
+			for(ItemStack drop : drops) {
+				if(drop!=null) {
+					if(drop.getEnchantmentLevel(Enchantment.DURABILITY)==2001) {
+						event.getDrops().remove(event.getDrops().indexOf(drop));
+					}
 				}
 			}
 		}
 	}
 	@EventHandler
 	public void trackerRespawn(PlayerRespawnEvent event) {
-		Player player = event.getPlayer();
-		if(plugin.getHunter().contains(player.getUniqueId())) {
-			player.getInventory().addItem(CompassItem.compass);
+		if(plugin.gethunt().containsKey(event.getPlayer().getUniqueId())) {
+			event.getPlayer().getInventory().addItem(items.Tracker());
 			return;
 		}
+		else return;
 	}
 }
