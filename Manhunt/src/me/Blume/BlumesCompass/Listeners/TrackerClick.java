@@ -1,11 +1,11 @@
 package me.Blume.BlumesCompass.Listeners;
 
 
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,19 +36,19 @@ public class TrackerClick implements Listener {
 			if(plugin.gethunt().containsKey(hunter.getUniqueId())) {
 				if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
 					if (item != null && item.getEnchantmentLevel(Enchantment.DURABILITY)==2001) {
-						Player closestVictim = getClosestVictim(hunter);
-						if (closestVictim != null) {    
+						Player speedRunner = speedRunner(hunter);
+						if (speedRunner != null) {    
 							CompassMeta meta = (CompassMeta) item.getItemMeta();
 							if (meta == null) {
 								meta = (CompassMeta) (items.Tracker().getItemMeta());
 							}
 							meta.setLodestoneTracked(false);
-							meta.setLodestone(closestVictim.getLocation());
+							meta.setLodestone(speedRunner.getLocation());
 							item.setItemMeta(meta);
 
-							hunter.setCompassTarget(closestVictim.getLocation());
+							hunter.setCompassTarget(speedRunner.getLocation());
 
-							hunter.sendMessage(ChatColor.AQUA + "Now tracking " + closestVictim.getName() + ".");
+							hunter.sendMessage(ChatColor.AQUA + "Now tracking " + speedRunner.getName() + ".");
 						} else {
 							if(portalloc==null) {
 								hunter.sendMessage(ChatColor.AQUA+"Could not find a player to track.");	
@@ -76,22 +76,12 @@ public class TrackerClick implements Listener {
 			portalloc = event.getFrom();
 		}
 	}
-
-	private Player getClosestVictim(Player hunter) {
-		Location hunterLocation = hunter.getLocation();
-		Player closestPlayer = null;
-		double closestDistanceSquared = Double.MAX_VALUE;
-
-		List<Player> candidates = hunter.getWorld().getPlayers();
-		for (Player p : candidates) {
-			if (plugin.gethunt().containsValue(p.getUniqueId())) {
-				double distanceSquared = p.getLocation().distanceSquared(hunterLocation);
-				if (distanceSquared <= closestDistanceSquared) {
-					closestDistanceSquared = distanceSquared;
-					closestPlayer = p;
-				}
-			}
+	private Player speedRunner(Player hunter) {
+		Player speedrunner = Bukkit.getPlayer(plugin.hunt.get(hunter.getUniqueId()));
+		World sr = speedrunner.getWorld();
+		if(hunter.getWorld().equals(sr)) {
+			return speedrunner;
 		}
-		return closestPlayer;
+		return null;
 	}
 }
