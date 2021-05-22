@@ -22,16 +22,14 @@ public class removehunts implements CommandExecutor{
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(sender instanceof Player) {
-			if(sender.isOp()) {
-				Player hunter = (Player) sender;
-				if(plugin.gethunt().containsKey(hunter.getUniqueId())) {
-					if(label.equals("removehunt")) {
-						UUID speedrunnerid = plugin.hunt.get(hunter.getUniqueId());
-						Player speedrunner = Bukkit.getPlayer(speedrunnerid);
-						speedrunner.sendMessage(ChatColor.AQUA+hunter.getName()+" stopped hunting you");
-						plugin.hunt.remove(hunter.getUniqueId());
-						items.removeTracker(hunter.getUniqueId());
-					}
+			Player hunter = (Player) sender;
+			if(plugin.gethunt().containsKey(hunter.getUniqueId())) {
+				if(label.equals("removehunt")) {
+					UUID speedrunnerid = plugin.hunt.get(hunter.getUniqueId());
+					Player speedrunner = Bukkit.getPlayer(speedrunnerid);
+					speedrunner.sendMessage(ChatColor.AQUA+hunter.getName()+" stopped hunting you");
+					plugin.hunt.remove(hunter.getUniqueId());
+					items.removeTracker(hunter.getUniqueId());
 				}
 			}
 		}
