@@ -6,6 +6,8 @@ api-version: 1.16
 
 commands:
   hunt:
+    description: hunters use this code to hunt speedrunner
   removehunt:
+    description: If you stopped hunting hunter should use this code to remove compass
   
   
